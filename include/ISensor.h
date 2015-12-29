@@ -7,33 +7,33 @@
 
 #include <pthread.h>
 #include <string>
-#include "IProvider.h"
 
-typedef struct {
-    long long   Address;
-    std::string Name;
-    double      Data;
-    double      PrevData;
-} SensorInfo;
+#include "IProvider.h"
+#include "GeneralTypes.h"
 
 class ISensor {
     public:
+        ISensor ();
+        ~ISensor ();
+        
         void SetOutProvider (IProvider* provider);
         void SetInProvider (IProvider* provider);
         void SetSensorName (std::string name);
         void SetSensorAddress (long long address);
+        void SetSensorType (SENSOR_TYPE type);
+        void SetReadInterval (unsigned int interval);
         
         virtual void SendData ();
         virtual void RecieveData ();
-        virtual void DataArrivedCallback () = 0;
-        
-        virtual void Start () = 0;
-        virtual void Stop () = 0;
+        virtual void DataArrivedCallback ();
+        virtual void Start ();
+        virtual void Stop ();
 
-        IProvider*  outProvider;
-        IProvider*  inProvider;
+        IProvider*      outProvider;
+        IProvider*      inProvider;
         
-        pthread_t   readDataThread;
-        SensorInfo  sensor;
-        bool        sensorReading;
+        pthread_t       readDataThread;
+        unsigned int    readInterval;
+        SensorInfo      sensor;
+        bool            sensorReading;
 };

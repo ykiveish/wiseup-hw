@@ -5,6 +5,7 @@
 
 #pragma once
 
+#include "mraa.h"
 #include "ISensor.h"
 
 class PIRSensor : public ISensor {

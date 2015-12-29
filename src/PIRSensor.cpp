@@ -11,7 +11,7 @@
 using namespace std;
 
 void * 
-dataThreadHandler (void * args) {
+PIRDataThreadHandler (void * args) {
     PIRSensor * obj = (PIRSensor *) args;
     
     while (obj->sensorReading) {
@@ -24,18 +24,20 @@ dataThreadHandler (void * args) {
         
         usleep (500000);
     }
-    
-    cout << "Exit - PIRSensor Thread" << endl;
 }
 
 PIRSensor::PIRSensor (int pin) {
     pinNumber = pin;
     pir = mraa_gpio_init(pinNumber);
     mraa_gpio_dir(pir, MRAA_GPIO_IN);
+    
+    SetSensorType (PIR);
 }
 
 PIRSensor::~PIRSensor () {
     Stop ();
+    
+    // Clean MRAA
     mraa_gpio_close	(pir);
 }
 
@@ -47,7 +49,7 @@ PIRSensor::DataArrivedCallback () {
 void
 PIRSensor::Start () {
     sensorReading = true;
-    int error = pthread_create(&readDataThread, NULL, dataThreadHandler, this);
+    int error = pthread_create(&readDataThread, NULL, PIRDataThreadHandler, this);
     if (error) {
     }
 }
