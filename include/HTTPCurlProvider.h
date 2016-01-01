@@ -12,6 +12,7 @@
 
 #include "IProvider.h"
 #include "GeneralTypes.h"
+#include "RESTApi.h"
 
 class HTTPCurlProvider : public IProvider {
     public:
@@ -27,6 +28,7 @@ class HTTPCurlProvider : public IProvider {
         std::string         m_UserKey;
         std::string         m_ServerPath;
         std::string         m_ServerPort;
+        RESTApi*            api;
         std::string 		m_ResponseData;
         std::stringstream   m_RequestData;
         CURLcode            m_HTTPResponse;

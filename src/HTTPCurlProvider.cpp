@@ -7,11 +7,11 @@
  
 using namespace std;
 
-size_t
+/*size_t
 CurlDataArrivedCB (void *ptr, size_t size, size_t count, void *stream) {
 	((std::string*)stream)->append((char*)ptr, 0, size*count);
 	return size*count;
-}
+}*/
 
 HTTPCurlProvider::HTTPCurlProvider (std::string serverPath, std::string serverPort, std::string userKey) {
     m_UserKey    = userKey;
@@ -26,26 +26,29 @@ HTTPCurlProvider::~HTTPCurlProvider () {
 
 void
 HTTPCurlProvider::InitiateProvider () {
-    curl_global_init (CURL_GLOBAL_ALL);
-	m_HTTPRequest = curl_easy_init ();
+    api = new RESTApi (m_ServerPath, m_ServerPort, m_UserKey);
+    // curl_global_init (CURL_GLOBAL_ALL);
+	// m_HTTPRequest = curl_easy_init ();
 }
 
 void
 HTTPCurlProvider::CloseProvider () {
+    delete api;
     // Clean CURL
-    curl_easy_cleanup (m_HTTPRequest);
-	curl_global_cleanup ();
+    // curl_easy_cleanup (m_HTTPRequest);
+	// curl_global_cleanup ();
 }
 
 void
 HTTPCurlProvider::SendData (REQIEST_TYPE type, void ** data) {
-    m_RequestData.str(std::string()); // Creaning the request buffer.
+    // m_RequestData.str(std::string()); // Creaning the request buffer.
     
     SensorInfo* sensor = (SensorInfo*) data;
     
     switch (type) {
         case HTTP_GET:
-            m_RequestData << "http://" <<
+            api->GET_UpdateSensor (sensor);
+            /*m_RequestData << "http://" <<
                 m_ServerPath <<                 // SERVER_PATH
                 ":" << m_ServerPort <<          // SERVER_PORT
                 "/api/set_sensor_value/" <<     // REST_METHOD
@@ -66,7 +69,7 @@ HTTPCurlProvider::SendData (REQIEST_TYPE type, void ** data) {
                     curl_easy_strerror(m_HTTPResponse) << std::endl;
                 }
             }
-            std::cout << m_RequestData.str() << std::endl;
+            std::cout << m_RequestData.str() << std::endl; */
         break;
         case HTTP_POST:
         break;
