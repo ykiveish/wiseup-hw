@@ -7,23 +7,7 @@
 
 #include <pthread.h>
 #include "RESTApi.h"
-
-typedef struct {
-    uint8_t     Data[64];
-} ConnectorData;
-
-/*
- * Service connectors.
- */
-class IConnector {
-    public:
-        virtual void StartListener ();
-        virtual void SendRequest (ConnectorData data);
-        virtual void RegisterRequestArrivedCallback ();
-        virtual void Listener () = 0;
-        
-        pthread_t requestListenerThread;
-};
+#include "IConnector.h"
 
 /*
  * Engine of the service.
@@ -33,10 +17,12 @@ class IService {
         void Start ();
         void Stop ();
         
-        virtual void MainLoop () = 0;
-    
-    protected:
-        IConnector  out;
-        IConnector  in;
-        RESTApi*    api;
+        virtual void Continue ()    = 0;
+        virtual void Pause ()       = 0;
+        virtual void MainLoop ()    = 0;
+        
+        bool            IService_serviceWorking;
+        IConnector*     out;
+        IConnector*     in;
+        RESTApi*        api;
 };

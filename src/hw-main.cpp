@@ -14,6 +14,8 @@
 #include "HTTPCurlProvider.h"
 #include "PIRSensor.h"
 #include "DHTSensor.h"
+#include "MMALCameraService.h"
+#include "Streamer.h"
 
 using namespace std;
 
@@ -29,8 +31,10 @@ void sig_handler (int signo);
 
 int
 main (int argc, char **arg) {
-    
     HttpProvider.InitiateProvider ();
+    
+    MMALCameraService* camera = new MMALCameraService ();
+    camera->Start ();
     
     PIRSensor* MovementSensor = new PIRSensor (PIR_PIN);
     MovementSensor->SetOutProvider (&HttpProvider);
@@ -43,14 +47,22 @@ main (int argc, char **arg) {
     TemperatureANDHumiditySensor->SetReadInterval (5 * 1000000);
     TemperatureANDHumiditySensor->Start ();
     
+    Streamer* stream = new Streamer ("/tmp/defender/mmal-camera/stream", "/home/pi/workspace/proj/wiseup-hw/src/streamer/mjpg-streamer-www", 8080);
+    stream->Start ();
+    
     signal (SIGINT, sig_handler);
     while (isRunning) {
         usleep (500000);
     }
     
+    stream->End ();
+    camera->Stop ();
     MovementSensor->Stop ();
     TemperatureANDHumiditySensor->Stop ();
     usleep (500000);
+    
+    delete camera;
+    delete stream;
     delete MovementSensor;
     delete TemperatureANDHumiditySensor;
     

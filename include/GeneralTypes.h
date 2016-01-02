@@ -22,3 +22,7 @@ typedef struct {
     double      Data;
     double      PrevData;
 } SensorInfo;
+
+typedef struct {
+    uint8_t     Data[64];
+} ConnectorData;
