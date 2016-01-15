@@ -1,6 +1,10 @@
 #ifndef RASPISTILL_H_
 #define RASPISTILL_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef void (*frame_recieved_callback) (long long, void *);
 
 typedef struct {
@@ -9,9 +13,6 @@ typedef struct {
     void *                  args;
 } mmal_camera_context_t;
 
-#ifdef __cplusplus
-extern "C" {
-#endif
 int mmal_camera (int argc, const char **argv, mmal_camera_context_t* ctx);
 #ifdef __cplusplus
    }  /* extern "C" */

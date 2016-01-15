@@ -12,4 +12,5 @@ GenericSensor::GenericSensor () {
 }
 
 GenericSensor::~GenericSensor () {
+    printf ("------- ~GenericSensor\n");
 }

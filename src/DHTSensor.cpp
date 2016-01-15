@@ -67,6 +67,7 @@ DHTSensor::DHTSensor (int pin, IProvider* provider) {
 
 DHTSensor::~DHTSensor () {
     Stop ();
+    printf ("------- ~DHTSensor\n");
     
     delete temperature;
     delete humidity;

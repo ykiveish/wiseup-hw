@@ -14,6 +14,7 @@
  */
 class IService {
     public:
+        virtual ~IService ();
         void Start ();
         void Stop ();
         

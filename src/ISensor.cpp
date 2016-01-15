@@ -12,7 +12,7 @@ ISensor::ISensor () {
 }
 
 ISensor::~ISensor () {
-    
+    printf ("------- ~ISensor\n");
 }
 
 void

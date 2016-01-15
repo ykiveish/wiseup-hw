@@ -15,6 +15,7 @@
 #include "PIRSensor.h"
 #include "DHTSensor.h"
 #include "MMALCameraService.h"
+#include "FaceRecognitionService.h"
 #include "Streamer.h"
 
 using namespace std;
@@ -35,6 +36,9 @@ main (int argc, char **arg) {
     
     MMALCameraService* camera = new MMALCameraService ();
     camera->Start ();
+    
+    FaceRecognitionService* face = new FaceRecognitionService ();
+    face->Start ();
     
     PIRSensor* MovementSensor = new PIRSensor (PIR_PIN);
     MovementSensor->SetOutProvider (&HttpProvider);
@@ -57,11 +61,13 @@ main (int argc, char **arg) {
     
     stream->End ();
     camera->Stop ();
+    face->Stop ();
     MovementSensor->Stop ();
     TemperatureANDHumiditySensor->Stop ();
     usleep (500000);
     
     delete camera;
+    delete face;
     delete stream;
     delete MovementSensor;
     delete TemperatureANDHumiditySensor;

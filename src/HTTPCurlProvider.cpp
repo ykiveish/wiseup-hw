@@ -15,6 +15,7 @@ HTTPCurlProvider::HTTPCurlProvider (std::string serverPath, std::string serverPo
 }
 
 HTTPCurlProvider::~HTTPCurlProvider () {
+    printf ("------- ~HTTPCurlProvider\n");
     CloseProvider ();
 }
 

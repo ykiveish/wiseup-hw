@@ -7,9 +7,19 @@
  
 using namespace std;
 
+IConnector::~IConnector () {
+    printf ("------- ~IConnector\n");
+}
+
 void
 IConnector::StartListener () {
-    
+    IConnector_connectorWorking = true;
+	Listener ();
+}
+
+void
+IConnector::StopListener () {
+	IConnector_connectorWorking = false;
 }
 
 void
@@ -18,6 +28,6 @@ IConnector::SendRequest (ConnectorData data) {
 }
 
 void
-IConnector::RegisterRequestArrivedCallback () {
-    
+IConnector::RegisterRequestArrivedCallback (RequestDataArrivedCallback callback) {
+    requestHandler = callback;
 }

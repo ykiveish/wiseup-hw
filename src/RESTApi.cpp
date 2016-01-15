@@ -27,6 +27,7 @@ RESTApi::~RESTApi () {
     // Clean CURL
     curl_easy_cleanup (m_HTTPRequest);
 	curl_global_cleanup ();
+    printf ("------- ~RESTApi\n");
 }
 
 void

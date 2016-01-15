@@ -6,6 +6,7 @@ add_subdirectory (camera-mmal)
 add_subdirectory (streamer)
 
 add_executable (hw-fw 	hw-main.cpp
+						uipc.cpp
                         Streamer.cpp
 						RESTApi.cpp 
 						HTTPCurlProvider.cpp 
@@ -15,5 +16,7 @@ add_executable (hw-fw 	hw-main.cpp
 						GenericSensor.cpp 
 						PIRSensor.cpp 
 						DHTSensor.cpp
-                        MMALCameraService.cpp )
+                        MMALCameraService.cpp 
+						UDSConnector.cpp
+                        FaceRecognitionService.cpp)
 target_link_libraries (hw-fw mraa curl wiringPi raspistill streamer ${CMAKE_THREAD_LIBS_INIT})

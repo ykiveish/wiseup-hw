@@ -7,6 +7,10 @@
  
 using namespace std;
 
+IService::~IService () {
+    printf ("------- ~IService\n");
+}
+
 void
 IService::Start () {
     // TODO - Start all IConnectors objects

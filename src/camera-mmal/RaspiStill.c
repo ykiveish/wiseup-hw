@@ -106,7 +106,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define FRAME_NEXT_SIGNAL        5
 #define FRAME_NEXT_IMMEDIATELY   6
 
-typedef void (*frame_recieved_callback) (long long);
+typedef void (*frame_recieved_callback) (long long, void *);
 
 typedef struct {
     unsigned int            running;
@@ -116,7 +116,7 @@ typedef struct {
 
 int mmal_status_to_int(MMAL_STATUS_T status);
 static void signal_handler(int signal_number);
-
+long long frames_counter = 0;
 
 /** Structure containing all state information for the current run
  */
@@ -1989,6 +1989,9 @@ int mmal_camera (int argc, const char **argv, mmal_camera_context_t* ctx)
                   free(final_filename);
                   final_filename = NULL;
                }
+               
+               ctx->callback (++frames_counter, ctx->args);
+               // printf ("running %d \n", ctx->running);
 			   
 			   // TODO - Make pause option
             } // end for (frame)

@@ -5,7 +5,9 @@
 
 #include <iostream>
 #include <unistd.h>
+#include <cstring>
 #include "MMALCameraService.h"
+#include "UDSConnector.h"
  
 using namespace std;
 
@@ -31,6 +33,10 @@ MainLoopMMALCameraServiceThreadHandler (void * args) {
 
 void __cameraFrame (long long frameNumber, void * args) {
     MMALCameraService * obj = (MMALCameraService *) args;
+    
+    ConnectorData data;
+    memcpy (data.Data, &frameNumber, sizeof (long long));
+    obj->out->SendRequest (data);
 }
 
 MMALCameraService::MMALCameraService () {
@@ -45,11 +51,18 @@ MMALCameraService::MMALCameraService () {
         mkdir (MMAL_CAMERA_PATH  ,0777);
         mkdir (STREAM_PATH       ,0777);
     }
+    
+    out = new UDSConnector ("FaceRecognitionServiceIN");
+    in  = new UDSConnector ("MMALCameraServiceIN");
 }
 
 MMALCameraService::~MMALCameraService () {
     IService_serviceWorking = false;
     mmalCameraContext.running = 0x0;
+    printf ("------- ~MMALCameraService\n");
+    
+    delete out;
+    delete in;
 }
 
 void

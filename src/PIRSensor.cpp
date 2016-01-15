@@ -37,6 +37,7 @@ PIRSensor::PIRSensor (int pin) {
 PIRSensor::~PIRSensor () {
     Stop ();
     
+    printf ("------- ~PIRSensor\n");
     // Clean MRAA
     mraa_gpio_close	(pir);
 }
